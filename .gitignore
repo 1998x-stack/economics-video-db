@@ -1,0 +1,29 @@
+# Source artifacts and protected datasets
+data/**
+!data/**/
+!data/**/.gitkeep
+
+# Browser and recording state
+agent-workspace/
+.browser-harness/
+recordings/
+*.part.wav
+*.partial.wav
+*.log
+
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+*.sqlite3
+*.db
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
