@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Forecast schema - Phase 4 placeholder only",
+  "description": "Do not treat this as a production evaluation contract.",
+  "type": "object"
+}

@@ -1,15 +1,62 @@
 # Economics Video DB
 
-可溯源的财经视频逐字稿、论点与经济预测数据库。
+A source-grounded economics video research database. Initial creator: 温义飞 (温义飞的急救财经).
 
-> Status: Phase 0 bootstrap. The implementation is developed incrementally on feature branches. Raw media and transcripts are not committed to Git.
+**Status:** Phase 0 scaffold + an operator-assisted single-video audio capture MVP. Automated Douyin player discovery, transcription, and LLM extraction are planned, not implemented.
 
-## Goal
+## Architecture
 
-Discover and catalog public videos; acquire audio only with suitable access and usage rights; generate timestamped transcripts; extract grounded claims and forecasts; verify forecasts against released economic data.
+1. browser-harness opens a Douyin video in your approved, locally connected Chrome.
+2. An explicit operator starts FFmpeg **system-loopback** audio capture; the operator plays the video and stops capture at the end.
+3. A WAV file and JSON manifest are saved to local data/ (ignored by Git).
+4. Later stages add timed transcripts, evidence-backed claims, forecasts, and verification.
 
-## First milestone
+**Important:** browser-harness start_recording/stop_recording only capture screenshot/action traces; they do not produce video audio. FFmpeg is a separate recorder. The recorder captures an audio input device, which may include sounds from other apps. Use a dedicated output route and disable notifications.
 
-Use [browser-harness](https://github.com/browser-use/browser-harness) for Chrome navigation and a **separate FFmpeg system-loopback recorder** for audio. Note: browser-harness built-in recordings contain screenshots and action traces, **not playable audio**.
+## Quick start (macOS example)
 
-See `docs/ROADMAP.md` and `docs/AUDIO_CAPTURE.md` after the scaffold is merged.
+Requirements: Python 3.11+, FFmpeg, Chrome, browser-harness, and a configured system audio loopback device such as BlackHole.
+
+~~~bash
+brew install ffmpeg
+uv tool install --python 3.12 --upgrade --force browser-harness
+# In Chrome: chrome://inspect/#remote-debugging -> enable remote debugging
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+evdb doctor
+ffmpeg -f avfoundation -list_devices true -i ""
+~~~
+
+Route the desired Chrome/system audio to BlackHole, and confirm device index/name from the command above. Example (replace device with the actual audio input):
+
+~~~bash
+evdb capture-one \
+  --url https://www.douyin.com/video/7275916556641652027 \
+  --backend avfoundation \
+  --device ":BlackHole 2ch" \
+  --rights-ok
+~~~
+
+This is an **operator-assisted** flow: browser-harness opens a tab (it may remain in the background); you activate the tab, pause/rewind, then press Enter to arm recording. Start playback yourself, then press Enter when it finishes. The tool does not automatically control the Douyin play button yet.
+
+For Linux use --backend pulse and an authorized monitor source, e.g. --device @DEFAULT_MONITOR@. Windows dshow is available experimentally using --device audio=DEVICE.
+
+All example URLs are demonstration inputs, not proof of current access. Do not use this tool to bypass authentication, DRM, paywalls, or platform access controls; confirm rights for every recording and subsequent transcription/reuse.
+
+## Documentation
+
+- [Development roadmap](docs/ROADMAP.md)
+- [Audio capture setup and limitations](docs/AUDIO_CAPTURE.md)
+- [Architecture and data contracts](docs/ARCHITECTURE.md)
+- [Douyin browser adapter notes](docs/DOUYIN.md)
+
+## Tests
+
+~~~bash
+pytest -q
+~~~
+
+## Media hygiene
+
+Git tracks source code, docs, schemas and tiny placeholder files only. Audio, video, transcripts, extracts, cookies and local browser artifacts are excluded through .gitignore. Do not commit downloaded media or complete copyrighted transcripts to this public repository without permission.

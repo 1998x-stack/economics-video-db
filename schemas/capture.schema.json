@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Audio capture manifest v1",
+  "type": "object",
+  "required": [
+    "schema_version", "capture_id", "platform", "video_id", "source_url",
+    "captured_at", "audio_path", "audio_sha256", "duration_seconds",
+    "format", "capture_backend", "capture_device", "rights_confirmed_by_operator"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "capture_id": {"type": "string"},
+    "platform": {"const": "douyin"},
+    "video_id": {"type": "string"},
+    "source_url": {"type": "string", "format": "uri"},
+    "browser_final_url": {"type": "string"},
+    "browser_title": {"type": ["string", "null"]},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "audio_path": {"type": "string"},
+    "audio_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "duration_seconds": {"type": "number", "exclusiveMinimum": 0},
+    "format": {"const": "wav_pcm_s16le_mono_16khz"},
+    "capture_backend": {"enum": ["avfoundation", "pulse", "dshow"]},
+    "capture_device": {"type": "string"},
+    "rights_confirmed_by_operator": {"const": true},
+    "transcription_status": {"type": "string"},
+    "analysis_status": {"type": "string"}
+  },
+  "additionalProperties": false
+}
