@@ -2,7 +2,7 @@
 
 A source-grounded economics video research database. Initial creator: 温义飞 (温义飞的急救财经).
 
-**Status:** Phase 0 scaffold + an operator-assisted single-video audio capture MVP. Automated Douyin player discovery, transcription, and LLM extraction are planned, not implemented.
+**Status:** Phase 0 scaffold + an operator-assisted single-video audio capture MVP. Agent-driven homepage discovery on Douyin and Xigua Video, automatic playback detection, transcription, and LLM extraction are planned, not implemented.
 
 ## Architecture
 
@@ -50,6 +50,15 @@ All example URLs are demonstration inputs, not proof of current access. Do not u
 - [Audio capture setup and limitations](docs/AUDIO_CAPTURE.md)
 - [Architecture and data contracts](docs/ARCHITECTURE.md)
 - [Douyin browser adapter notes](docs/DOUYIN.md)
+- [Pi agent homepage-driven serial workflow](docs/AGENT_WORKFLOW.md)
+- [Xigua Video adapter design](docs/XIGUA.md)
+- [Pi agent skill](.pi/skills/economics-video-capture/SKILL.md)
+
+## Future Pi-agent collection flow
+
+Pi will start from a user-confirmed creator homepage on Douyin or Xigua Video, discover visible video IDs, and record one permitted video at a time using browser-harness and a separate local FFmpeg recorder. Persistent job states prevent duplicates, resume after interruptions and preserve source provenance. The site-specific adapters are **not yet implemented**; evdb capture-one remains a manual single-video pilot.
+
+See docs/AGENT_WORKFLOW.md. Pi users may load the local .pi/skills/economics-video-capture/SKILL.md specification. Do not treat it as a working unattended automation.
 
 ## Tests
 
