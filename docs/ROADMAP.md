@@ -13,13 +13,21 @@ Each phase should be a separate reviewed PR with tests and a demonstrated artifa
 - [ ] Persistent job ledger with restart, duplicate detection and failure states.
 - [ ] Test one accessible, authorized Douyin clip from page to verified WAV.
 
-## Phase 2: browser-harness Douyin player adapter
+## Phase 2: Pi-agent homepage discovery + serial capture (Douyin first, then Xigua)
+- [ ] Build persistent jobs table: platform, creator ID, video ID, URL, discovery checkpoint, status, retries and provenance.
+- [ ] Expose noninteractive local recorder start/status/stop commands for Pi. Current capture-one is NOT suitable for unattended agents.
+- [ ] Implement homepage visible-works enumeration and creator identity verification for Douyin.
+- [ ] Build a separate Xigua author/profile discovery adapter without sharing unverified selectors or IDs.
+- [ ] Model one-video-at-a-time lease, restart, failed attempts and audio quality flags.
+- [ ] Pilot 3 authorized videos with failure and crash recovery. Read docs/AGENT_WORKFLOW.md before writing automation.
+
+## Phase 2A: browser-harness video player adapter
 - [ ] Inspect <video> elements and accessible UI elements only; handle SPA navigation.
 - [ ] Start recorder BEFORE playback; confirm transition to playing.
 - [ ] Poll paused/currentTime/ended; distinguish end, buffering, live video and timeouts.
 - [ ] Stop recorder AFTER verified end, never upon unrelated navigation.
 - [ ] Operator override and consent, rate limits, login/denial handling.
-- [ ] Batch queue with no concurrent tabs on shared local Chrome daemon.
+- [ ] Serial queue with no concurrent tabs or recorders in shared local Chrome; prevent recommended autoplay contamination.
 
 ## Phase 3: ASR and corpus
 - [ ] Test faster-whisper and FunASR on 20 manually reviewed samples.
